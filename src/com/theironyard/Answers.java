@@ -57,6 +57,26 @@ public class Answers {
         return a5;
     }
 
+    public void setA1(String a1) {
+        this.a1 = a1;
+    }
+
+    public void setA2(String a2) {
+        this.a2 = a2;
+    }
+
+    public void setA3(String a3) {
+        this.a3 = a3;
+    }
+
+    public void setA4(String a4) {
+        this.a4 = a4;
+    }
+
+    public void setA5(String a5) {
+        this.a5 = a5;
+    }
+
     @Override
     public String toString() {
         return "Answers{" +

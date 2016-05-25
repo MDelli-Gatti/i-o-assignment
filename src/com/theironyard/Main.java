@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class Main {
 
+    static final String SAVE_FILE = "answers.json";
     static Scanner scanner = new Scanner(System.in);
     static Answers answers = new Answers();
 
@@ -28,27 +29,27 @@ public class Main {
         answers.a4 = scanner.nextLine();
         System.out.println(answers.q5);
         answers.a5 = scanner.nextLine();
+        saveAnswers();
     }
 
     public static void main(String[] args) {
-        loadAnswers();
+
+       answers = loadAnswers(SAVE_FILE);
 
         if (answers == null) {
-
+            answers = new Answers();
             askQuestions();
-
-            saveAnswers();
         }
         else {
-            System.out.printf("Welcome back %s.\n Here are the answers you provided before:");
+            System.out.printf("Welcome back %s.\n Here are the answers you provided before:\n",answers.name);
             System.out.println(answers.q1 + "\n" + answers.a1);
             System.out.println(answers.q2 + "\n" + answers.a2);
             System.out.println(answers.q3 + "\n" + answers.a3);
             System.out.println(answers.q4 + "\n" + answers.a4);
             System.out.println(answers.q5 + "\n" + answers.a5);
-            System.out.println("Would you like to change any of your information?");
+            System.out.println("Would you like to change any of your information?[y/n]\n");
             String yOrN = scanner.nextLine();
-            if (yOrN == "Y"){
+            if (yOrN.equals("y")){
                 askQuestions();
             }
         }
@@ -58,10 +59,9 @@ public class Main {
         JsonSerializer serializer = new JsonSerializer();
         String json = serializer.serialize(answers);
 
-        File f = new File("answers.json");
-        FileWriter fw = null;
+        File f = new File(SAVE_FILE);
         try {
-            fw = new FileWriter(f);
+            FileWriter fw = new FileWriter(f);
             fw.write(json);
             fw.close();
         } catch (IOException e) {
@@ -69,17 +69,16 @@ public class Main {
         }
 
     }
-    public static Answers loadAnswers(){
-        File f = new File("answers.json");
-        Scanner scanner = null;
+    public static Answers loadAnswers(String SAVE_FILE){
+        File f = new File(SAVE_FILE);
         try {
-            scanner = new Scanner(f);
+            Scanner scanner = new Scanner(f);
             scanner.useDelimiter("\\Z");
             String contents = scanner.next();
             JsonParser parser = new JsonParser();
             return parser.parse(contents, Answers.class);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("load failed");
         }
         return null;
     }
